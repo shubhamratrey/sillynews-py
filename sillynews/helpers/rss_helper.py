@@ -1,7 +1,65 @@
 from dateutil import parser
+import feedparser
+from django.core.paginator import Paginator, InvalidPage
 
 
 class RSSHelper(object):
+
+    @staticmethod
+    def get_rss_link(page_no=1):
+        _list = []
+        rss_link = RSSHelper.get_rss_links()
+        paginator = Paginator(rss_link, 1)
+        has_next = page_no < paginator.num_pages
+        try:
+            _list = paginator.page(page_no)[0]
+        except InvalidPage:
+            return has_next, _list
+
+        return has_next, _list
+
+    @staticmethod
+    def get_rss_link_data(link, page_no=1, page_size=20):
+        d = feedparser.parse(link)
+        _list = []
+        paginator = Paginator(d.entries, page_size)
+        has_next = page_no < paginator.num_pages
+        try:
+            d_entries = paginator.page(page_no)
+        except InvalidPage:
+            return has_next, _list
+
+        for entry in d_entries:
+            _list.append(RSSHelper.get_rss_data_from_entry(entry, d.feed["title"]))
+        return has_next, _list
+
+    @staticmethod
+    def automatePagination_(rss_link_page=1, page_no=1, page_size=20):
+        has_next_link, rss_link = RSSHelper.get_rss_link(page_no=rss_link_page)
+        final_list = []
+        has_next, list = RSSHelper.get_rss_link_data(rss_link['link'], page_no=page_no,
+                                                     page_size=page_size)
+        if list:
+            final_list.append(list)
+
+        if len(list) < page_size and not has_next:
+            rss_link_page += 1
+            has_next_link, rss_link = RSSHelper.get_rss_link(page_no=rss_link_page)
+            has_next, _list = RSSHelper.get_rss_link_data(rss_link['link'], page_no,
+                                                          (page_size - len(list)))
+            if not _list and has_next_link:
+                rss_link_page += 1
+                has_next_link, rss_link = RSSHelper.get_rss_link(page_no=rss_link_page)
+                has_next, _list = RSSHelper.get_rss_link_data(rss_link['link'], page_no,
+                                                              (page_size - len(list)))
+
+            print('inside not next', len(_list), has_next)
+            final_list.append(_list)
+
+        if has_next_link:
+            has_next = has_next_link
+
+        return has_next, final_list[0]
 
     @staticmethod
     def get_rss_links():
@@ -9,20 +67,21 @@ class RSSHelper(object):
         rss_list.append({'link': 'feed:https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms',
                          'content_type': 'Entertainment'})
         rss_list.append({'link': 'feed:https://thewire.in/rss', 'content_type': 'Entertainment'})
-        # rss_list.append('feed:https://thewire.in/rss')
-        # rss_list.append('http://feeds.feedburner.com/ScrollinArticles.rss')
-        # rss_list.append('feed:https://www.livemint.com/rss/politics')
-        # rss_list.append('feed:https://timesofindia.indiatimes.com/rssfeedstopstories.cms')
-        # rss_list.append('feed:https://timesofindia.indiatimes.com/rssfeeds/-2128936835.cms')
-        # rss_list.append('http://feeds.feedburner.com/ndtvnews-top-stories')
-        # rss_list.append('http://feeds.feedburner.com/ScrollinArticles.rss')
-        # rss_list.append('https://indianexpress.com/feed/')
-        # rss_list.append('https://www.thehindu.com/news/national/?service=rss')
-        # rss_list.append('https://www.news18.com/rss/india.xml')
-        # # rss_list.append('http://www.firstpost.com/feed/rss') taking too long to load
-        # rss_list.append('feed:https://www.business-standard.com/rss/latest.rss')
-        # rss_list.append('https://prod-qt-images.s3.amazonaws.com/production/thequint/feed.xml')
-        # rss_list.append('feed:https://thewire.in/rss')
+        rss_list.append({'link': 'http://feeds.feedburner.com/ScrollinArticles.rss', 'content_type': 'Entertainment'})
+        rss_list.append({'link': 'feed:https://www.livemint.com/rss/politics', 'content_type': 'Entertainment'})
+        rss_list.append({'link': 'feed:https://timesofindia.indiatimes.com/rssfeedstopstories.cms',
+                         'content_type': 'Entertainment'})
+        rss_list.append({'link': 'feed:https://timesofindia.indiatimes.com/rssfeeds/-2128936835.cms',
+                         'content_type': 'Entertainment'})
+        rss_list.append({'link': 'http://feeds.feedburner.com/ScrollinArticles.rss', 'content_type': 'Entertainment'})
+        rss_list.append({'link': 'https://indianexpress.com/feed/', 'content_type': 'Entertainment'})
+        rss_list.append({'link': 'https://www.thehindu.com/news/national/?service=rss', 'content_type': 'Entertainment'})
+        rss_list.append({'link': 'https://www.news18.com/rss/india.xml', 'content_type': 'Entertainment'})
+        rss_list.append({'link': 'http://www.firstpost.com/feed/rss', 'content_type': 'Entertainment'})
+        rss_list.append({'link': 'feed:https://www.business-standard.com/rss/latest.rss', 'content_type': 'Entertainment'})
+        rss_list.append({'link': 'https://prod-qt-images.s3.amazonaws.com/production/thequint/feed.xml',
+                         'content_type': 'Entertainment'})
+        rss_list.append({'link': 'feed:https://thewire.in/rss', 'content_type': 'Entertainment'})
 
         return rss_list
 
