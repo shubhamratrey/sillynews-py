@@ -1,1 +1,1 @@
-web: gunicorn --chdir sillynews zoopzam.wsgi --log-file -
+web: gunicorn --chdir sillynews sillynews.wsgi --log-file -
