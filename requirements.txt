@@ -8,3 +8,4 @@ ipython==6.5.0
 google-cloud-storage==1.19.1
 feedparser==5.2.1
 # django-heroku==0.3.1
+python-dateutil==2.7.3
