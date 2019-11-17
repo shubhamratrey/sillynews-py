@@ -38,7 +38,7 @@ class HomeV1(APIResponseBase):
             {"type": HOME_ITEM_TYPES.INSTA_FEED, "instagram": []},  # Insta_feed
         ]
         profile = self.get_profile()
-        if profile:
+        if profile and page_no == 1:
             home_items_info.insert(0, {"type": HOME_ITEM_TYPES.TASK_FEED, "info": {}})
         home_items, has_more_page = [], False
         paginator = Paginator(home_items_info, 10)
@@ -73,14 +73,14 @@ class HomeV1(APIResponseBase):
                 if tweets:
                     items.append({
                         "type": HOME_ITEM_TYPES.TWEETS,
-                        "tweets": tweets
+                        "tweet_feed": tweets
                     })
             elif home_item['type'] == HOME_ITEM_TYPES.INSTA_FEED:
                 insta_feed = InstaHelper.get_feed_data()
                 if insta_feed:
                     items.append({
                         "type": HOME_ITEM_TYPES.INSTA_FEED,
-                        "instagram": insta_feed
+                        "insta_feed": insta_feed
                     })
 
             elif home_item['type'] == HOME_ITEM_TYPES.NEWS_GROUP:
