@@ -37,3 +37,15 @@ class UserProfile(User):
 
     def is_cms_admin(self):
         return self.is_superuser
+
+
+class UserInstaPostSeen(models.Model):
+    """
+    Model for storing users' last seen of a insta post.
+    """
+    profile = models.ForeignKey('users.UserProfile', null=False, on_delete=models.CASCADE)
+    post_id = models.IntegerField(max_length=250, blank=True)
+    visited_on = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        unique_together = ("profile", "post_id")
