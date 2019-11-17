@@ -1,6 +1,7 @@
 import random
 from django.core.paginator import Paginator, InvalidPage
 from helpers.scrapper_helper import ScrapperHelper
+from constants import CONTENT_TYPE
 
 
 class InstaHelper(object):
@@ -11,22 +12,22 @@ class InstaHelper(object):
 
     @staticmethod
     def account_links():
-        account_list = [{'insta_id': 'lilireinhart', 'content_type': 'Entertainment'},
-                        {'insta_id': 'andreeacristina', 'content_type': 'Entertainment'},
-                        {'insta_id': 'manushi_chhillar', 'content_type': 'Entertainment'},
-                        {'insta_id': 'iss', 'content_type': 'Entertainment'},
-                        {'insta_id': 'spacex', 'content_type': 'Entertainment'},
-                        {'insta_id': 'kuku_fm', 'content_type': 'Entertainment'},
-                        {'insta_id': 'sonaakshiraaj', 'content_type': 'Entertainment'},
-                        {'insta_id': 'aliaabhatt', 'content_type': 'Entertainment'},
-                        {'insta_id': 'barkhasingh0308', 'content_type': 'Entertainment'},
-                        {'insta_id': 'tarasutaria', 'content_type': 'Entertainment'},
-                        {'insta_id': 'aditiraohydari', 'content_type': 'Entertainment'},
-                        {'insta_id': 'jeffbezos', 'content_type': 'Entertainment'},
-                        {'insta_id': 'sundarpichai', 'content_type': 'Entertainment'},
-                        {'insta_id': 'kaajal9', 'content_type': 'Entertainment'},
-                        {'insta_id': 'amberheard', 'content_type': 'Entertainment'},
-                        {'insta_id': 'sarya12', 'content_type': 'Entertainment'},
+        account_list = [{'insta_id': 'lilireinhart', 'category': CONTENT_TYPE.ENTERTAINMENT},
+                        {'insta_id': 'andreeacristina', 'category': CONTENT_TYPE.ENTERTAINMENT},
+                        {'insta_id': 'manushi_chhillar', 'category': CONTENT_TYPE.ENTERTAINMENT},
+                        {'insta_id': 'iss', 'category': CONTENT_TYPE.SPACE},
+                        {'insta_id': 'spacex', 'category': CONTENT_TYPE.SPACE},
+                        {'insta_id': 'kuku_fm', 'category': CONTENT_TYPE.ENTERTAINMENT},
+                        {'insta_id': 'sonaakshiraaj', 'category': CONTENT_TYPE.BOLLYWOOD},
+                        {'insta_id': 'aliaabhatt', 'category': CONTENT_TYPE.BOLLYWOOD},
+                        {'insta_id': 'barkhasingh0308', 'category': CONTENT_TYPE.ENTERTAINMENT},
+                        {'insta_id': 'tarasutaria', 'category': CONTENT_TYPE.BOLLYWOOD},
+                        {'insta_id': 'aditiraohydari', 'category': CONTENT_TYPE.BOLLYWOOD},
+                        {'insta_id': 'jeffbezos', 'category': CONTENT_TYPE.TECHNOLOGY},
+                        {'insta_id': 'sundarpichai', 'category': CONTENT_TYPE.TECHNOLOGY},
+                        {'insta_id': 'kaajal9', 'category': CONTENT_TYPE.BOLLYWOOD},
+                        {'insta_id': 'amberheard', 'category': CONTENT_TYPE.HOLLYWOOD},
+                        {'insta_id': 'sarya12', 'category': CONTENT_TYPE.ENTERTAINMENT},
                         ]
 
         for account in account_list:
@@ -54,9 +55,27 @@ class InstaHelper(object):
         data = []
         for account in InstaHelper.account_links()[:5]:
             posts = InstaHelper.profile_page_recent_posts(account['link'])
-            random.shuffle(posts)
-            data.append(posts[0])
-            data.append(posts[1])
+            if posts:
+                random.shuffle(posts)
+                data.append(posts[0])
+                data.append(posts[1])
+        random.shuffle(data)
+        return data
+
+    @staticmethod
+    def get_category_feed_data(category):
+        data = []
+        account_list = []
+        accounts = InstaHelper.account_links()
+        for account in accounts:
+            if account['category'] in category:
+                account_list.append(account)
+        for account in account_list:
+            posts = InstaHelper.profile_page_recent_posts(account['link'])
+            if posts:
+                random.shuffle(posts)
+                data.append(posts[0])
+                data.append(posts[1])
         random.shuffle(data)
         return data
 

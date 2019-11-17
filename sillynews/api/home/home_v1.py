@@ -25,9 +25,10 @@ class HomeV1(APIResponseBase):
 
     def get_page_home_items(self, page_no=1):
         home_items_info = [
-            {"type": HOME_ITEM_TYPES.TWEETS, "tweets": []},  # tweet_feed
+            {"type": HOME_ITEM_TYPES.TWEETS},  # tweet_feed
             {"type": HOME_ITEM_TYPES.NEWS_GROUP, "content_type": CONTENT_TYPE.TECHNOLOGY},
             {"type": HOME_ITEM_TYPES.NEWS_GROUP, "content_type": CONTENT_TYPE.POLITICAL},
+            {"type": HOME_ITEM_TYPES.INSTA_FEED, "category": CONTENT_TYPE.HOLLYWOOD},  # Insta_feed
             {"type": HOME_ITEM_TYPES.NEWS_GROUP, "content_type": CONTENT_TYPE.ENTERTAINMENT},
             {"type": HOME_ITEM_TYPES.NEWS_GROUP, "content_type": CONTENT_TYPE.TECHNOLOGY},
             {"type": HOME_ITEM_TYPES.NEWS_GROUP, "content_type": CONTENT_TYPE.POLITICAL},
@@ -35,7 +36,7 @@ class HomeV1(APIResponseBase):
             {"type": HOME_ITEM_TYPES.NEWS_GROUP, "content_type": CONTENT_TYPE.TECHNOLOGY},
             {"type": HOME_ITEM_TYPES.NEWS_GROUP, "content_type": CONTENT_TYPE.POLITICAL},
             {"type": HOME_ITEM_TYPES.NEWS_GROUP, "content_type": CONTENT_TYPE.ENTERTAINMENT},
-            {"type": HOME_ITEM_TYPES.INSTA_FEED, "instagram": []},  # Insta_feed
+            {"type": HOME_ITEM_TYPES.INSTA_FEED, "category": CONTENT_TYPE.BOLLYWOOD},  # Insta_feed
         ]
         profile = self.get_profile()
         if profile and page_no == 1:
@@ -76,11 +77,12 @@ class HomeV1(APIResponseBase):
                         "tweet_feed": tweets
                     })
             elif home_item['type'] == HOME_ITEM_TYPES.INSTA_FEED:
-                insta_feed = InstaHelper.get_feed_data()
+                insta_feed = InstaHelper.get_category_feed_data(home_item['category'])
                 if insta_feed:
                     items.append({
                         "type": HOME_ITEM_TYPES.INSTA_FEED,
-                        "insta_feed": insta_feed
+                        "insta_feed": insta_feed,
+                        "category": home_item['category']
                     })
 
             elif home_item['type'] == HOME_ITEM_TYPES.NEWS_GROUP:
