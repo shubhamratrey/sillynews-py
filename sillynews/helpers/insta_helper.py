@@ -70,12 +70,13 @@ class InstaHelper(object):
         for account in accounts:
             if account['category'] in category:
                 account_list.append(account)
+        random.shuffle(account_list)
         for account in account_list:
             posts = InstaHelper.profile_page_recent_posts(account['link'])
             if posts:
                 random.shuffle(posts)
-                data.append(posts[0])
-                data.append(posts[1])
+                data.append(posts[random.choice([1, 3, 5, 7, 9])])
+                data.append(posts[random.choice([2, 4, 6, 8, 10])])
         random.shuffle(data)
         return data
 
