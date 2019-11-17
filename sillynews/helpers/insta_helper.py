@@ -115,6 +115,7 @@ class InstaHelper(object):
                 node = node.get('node')
                 if node and isinstance(node, dict):
                     data = dict()
+                    data['id'] = node['id']
                     data['thumbnail_src'] = node['thumbnail_src']
                     data['display_url'] = node['display_url']
                     if node['edge_media_to_caption'] and len(node['edge_media_to_caption']['edges']) > 0:
