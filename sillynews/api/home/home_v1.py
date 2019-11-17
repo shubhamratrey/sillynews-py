@@ -1,3 +1,4 @@
+import random
 from api.responses.base import APIResponseBase
 from api.decorators.validators import allowed_methods
 from helpers.rss_helper import RSSHelper
@@ -19,6 +20,7 @@ class HomeV1(APIResponseBase):
         data = {}
         page_no = self.get_sanitized_int(self.request.GET.get('page', 1))
         items, has_more = self.get_home_items(page=page_no)
+        random.shuffle(items)
         data['items'] = items
         data['has_more'] = has_more
         return data
