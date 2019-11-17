@@ -1,4 +1,5 @@
 from dateutil import parser
+import random
 import feedparser
 from django.core.paginator import Paginator, InvalidPage
 
@@ -9,6 +10,7 @@ class RSSHelper(object):
     def get_rss_link(page_no=1):
         _list = []
         rss_link = RSSHelper.get_rss_links()
+        random.shuffle(rss_link)
         paginator = Paginator(rss_link, 1)
         has_next = page_no < paginator.num_pages
         try:
