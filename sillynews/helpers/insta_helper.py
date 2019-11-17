@@ -120,6 +120,8 @@ class InstaHelper(object):
                         data['caption'] = node['edge_media_to_caption']['edges'][0]['node']['text']
                     data['n_likes'] = node['edge_liked_by']['count']
                     data['n_comments'] = node['edge_media_to_comment']['count']
+                    if node['location']:
+                        data['location'] = node['location']['name']
                     profile = dict()
                     profile['username'] = node['owner']['username']
                     profile['profile_pic_url'] = user_metrics['profile_pic_url']
