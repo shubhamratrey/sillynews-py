@@ -82,8 +82,12 @@ WSGI_APPLICATION = 'sillynews.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'dfo5v5drqamk74',
+        'ENGINE': 'django.db.backends.postgresql',
+        'USER': 'gsituufcsbsbue',
+        'PASSWORD': 'a771e2c7fa8d2a5e67a9290dbedd9a2b81e1b2da2c7102de0341e87e98bd8a5f',
+        'HOST': 'ec2-54-221-214-3.compute-1.amazonaws.com',
+        'PORT': 5432
     }
 }
 
