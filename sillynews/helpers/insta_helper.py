@@ -1,9 +1,13 @@
 import random
 from django.core.paginator import Paginator, InvalidPage
-from helpers.insta_scrapper import InstaScraper
+from helpers.scrapper_helper import ScrapperHelper
 
 
 class InstaHelper(object):
+
+    @staticmethod
+    def get_instagram_profile_link_from_username(username):
+        return format('https://www.instagram.com/%s/?hl=en' % username)
 
     @staticmethod
     def account_links():
@@ -26,7 +30,7 @@ class InstaHelper(object):
                         ]
 
         for account in account_list:
-            account['link'] = format('https://www.instagram.com/%s/?hl=en' % account['insta_id'])
+            account['link'] = InstaHelper.get_instagram_profile_link_from_username(account['insta_id'])
 
         random.shuffle(account_list)
         return account_list
@@ -52,9 +56,56 @@ class InstaHelper(object):
         for account in InstaHelper.account_links()[:5]:
             rank += 1
             print(rank)
-            posts = InstaScraper().profile_page_recent_posts(account['link'])
+            posts = InstaHelper.profile_page_recent_posts(account['link'])
             random.shuffle(posts)
             data.append(posts[0])
             data.append(posts[1])
         random.shuffle(data)
         return data
+
+    @staticmethod
+    def profile_page_metrics(profile_url):
+        results = {}
+        try:
+            response = ScrapperHelper.get_response_from_url(profile_url)
+            json_data = ScrapperHelper.extract_json_data_from_html(response)
+            metrics = json_data['entry_data']['ProfilePage'][0]['graphql']['user']
+        except Exception as e:
+            raise e
+        else:
+            for key, value in metrics.items():
+                print(key, value)
+                if key != 'edge_owner_to_timeline_media':
+                    if value and isinstance(value, dict):
+                        value = value['count']
+                        results[key] = value
+                    elif value:
+                        results[key] = value
+        return results
+
+    @staticmethod
+    def profile_page_recent_posts(profile_url):
+        results = []
+        try:
+            response = ScrapperHelper.get_response_from_url(profile_url)
+            json_data = ScrapperHelper.extract_json_data_from_html(response)
+            print(json_data, "\n\n\n")
+            metrics = json_data['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media'][
+                "edges"]
+        except Exception as e:
+            raise e
+        else:
+            for node in metrics:
+                node = node.get('node')
+                if node and isinstance(node, dict):
+                    data = dict()
+                    data['thumbnail_src'] = node['thumbnail_src']
+                    data['display_url'] = node['display_url']
+                    if node['edge_media_to_caption'] and len(node['edge_media_to_caption']['edges']) > 0:
+                        data['caption'] = node['edge_media_to_caption']['edges'][0]['node']['text']
+                    data['username'] = node['owner']['username']
+                    data['n_likes'] = node['edge_liked_by']['count']
+                    data['n_comments'] = node['edge_media_to_comment']['count']
+                    data['link'] = profile_url
+                    results.append(data)
+        return results
