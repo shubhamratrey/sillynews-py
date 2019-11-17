@@ -40,7 +40,7 @@ class HomeV1(APIResponseBase):
         ]
         profile = self.get_profile()
         if profile and page_no == 1:
-            home_items_info.insert(0, {"type": HOME_ITEM_TYPES.TASK_FEED, "info": {}})
+            home_items_info.insert(0, {"type": HOME_ITEM_TYPES.TASK_FEED})
         home_items, has_more_page = [], False
         paginator = Paginator(home_items_info, 10)
         try:
