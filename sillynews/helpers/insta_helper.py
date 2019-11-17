@@ -52,10 +52,7 @@ class InstaHelper(object):
     @staticmethod
     def get_feed_data():
         data = []
-        rank = 0
         for account in InstaHelper.account_links()[:5]:
-            rank += 1
-            print(rank)
             posts = InstaHelper.profile_page_recent_posts(account['link'])
             random.shuffle(posts)
             data.append(posts[0])
@@ -74,7 +71,6 @@ class InstaHelper(object):
             raise e
         else:
             for key, value in metrics.items():
-                print(key, value)
                 if key != 'edge_owner_to_timeline_media':
                     if value and isinstance(value, dict):
                         value = value['count']
@@ -89,7 +85,6 @@ class InstaHelper(object):
         try:
             response = ScrapperHelper.get_response_from_url(profile_url)
             json_data = ScrapperHelper.extract_json_data_from_html(response)
-            print(json_data, "\n\n\n")
             metrics = json_data['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media'][
                 "edges"]
         except Exception as e:
