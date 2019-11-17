@@ -41,6 +41,7 @@ class HomeV1(APIResponseBase):
         profile = self.get_profile()
         if profile and page_no == 1:
             home_items_info.insert(0, {"type": HOME_ITEM_TYPES.TASK_FEED})
+        home_items_info.insert(0, {"type": HOME_ITEM_TYPES.TASK_FEED})
         home_items, has_more_page = [], False
         paginator = Paginator(home_items_info, 10)
         try:
@@ -62,11 +63,11 @@ class HomeV1(APIResponseBase):
             if home_item['type'] == HOME_ITEM_TYPES.TASK_FEED:
                 items.append({
                     "type": HOME_ITEM_TYPES.TASK_FEED,
-                    "info": {
+                    "user_info": {
                         "name": "Shubham Ratrey",
                         "quote": "Quote of the day",
-                        "n_pending_task": "4",
-                        "n_total_task": "10",
+                        "n_pending_task": 4,
+                        "n_total_task": 10,
                     }
                 })
             elif home_item['type'] == HOME_ITEM_TYPES.TWEETS:
