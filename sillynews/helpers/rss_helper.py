@@ -2,14 +2,15 @@ from dateutil import parser
 import random
 import feedparser
 from django.core.paginator import Paginator, InvalidPage
+from constants import ContentType
 
 
 class RSSHelper(object):
 
     @staticmethod
-    def get_rss_link(page_no=1):
+    def get_rss_link(page_no=1, _filter=None):
         _list = []
-        rss_link = RSSHelper.get_rss_links()
+        rss_link = RSSHelper.get_rss_links(_filter)
         random.shuffle(rss_link)
         paginator = Paginator(rss_link, 1)
         has_next = page_no < paginator.num_pages
@@ -64,10 +65,10 @@ class RSSHelper(object):
         return has_next, final_list[0]
 
     @staticmethod
-    def get_rss_links():
+    def get_rss_links(_filter=None):
         rss_list = [{'link': 'feed:https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms',
-                     'content_type': 'Entertainment'},
-                    {'link': 'feed:https://thewire.in/rss', 'content_type': 'Entertainment'},
+                     'content_type': ContentType.ENTERTAINMENT},
+                    {'link': 'feed:https://thewire.in/rss', 'content_type': ContentType.POLITICAL},
                     {'link': 'http://feeds.feedburner.com/ScrollinArticles.rss', 'content_type': 'Entertainment'},
                     {'link': 'feed:https://www.livemint.com/rss/politics', 'content_type': 'Entertainment'},
                     {'link': 'feed:https://timesofindia.indiatimes.com/rssfeedstopstories.cms',
@@ -83,6 +84,13 @@ class RSSHelper(object):
                     {'link': 'https://prod-qt-images.s3.amazonaws.com/production/thequint/feed.xml',
                      'content_type': 'Entertainment'},
                     {'link': 'feed:https://thewire.in/rss', 'content_type': 'Entertainment'}]
+
+        if _filter:
+            temp_filter_list = []
+            for _list in rss_list:
+                if _filter in _list['content_type']:
+                    temp_filter_list.append(_list)
+            rss_list = temp_filter_list
 
         return rss_list
 

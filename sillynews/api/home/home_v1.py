@@ -19,7 +19,7 @@ class HomeV1(APIResponseBase):
         page_no = self.get_sanitized_int(self.request.GET.get('page', 1))
         rss_page_no = self.get_sanitized_int(self.request.GET.get('rss_page', 1))
         page_size = self.get_sanitized_int(self.request.GET.get('page_size', self.__page_size__))
-        has_next_rss, link = RSSHelper.get_rss_link(page_no=rss_page_no)
+        has_next_rss, link = RSSHelper.get_rss_link(page_no=rss_page_no, _filter='entertainment')
         has_next, list = RSSHelper.get_rss_link_data(link=link['link'], page_no=page_no, page_size=page_size)
 
         items.append({
@@ -38,10 +38,12 @@ class HomeV1(APIResponseBase):
         })
 
         insta_feed = InstaHelper.get_feed_data()
-        items.append({
-            "type": "instagram",
-            "instagram": insta_feed
-        })
+        if insta_feed:
+            items.append({
+                "type": "instagram",
+                "instagram": insta_feed
+            })
+
         items.append({
             "type": "news",
             "sub_type": "comedy",
