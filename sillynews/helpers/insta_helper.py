@@ -106,6 +106,7 @@ class InstaHelper(object):
             json_data = ScrapperHelper.extract_json_data_from_html(response)
             metrics = json_data['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media'][
                 "edges"]
+            user_metrics = json_data['entry_data']['ProfilePage'][0]['graphql']['user']
         except Exception as e:
             raise e
         else:
@@ -117,9 +118,13 @@ class InstaHelper(object):
                     data['display_url'] = node['display_url']
                     if node['edge_media_to_caption'] and len(node['edge_media_to_caption']['edges']) > 0:
                         data['caption'] = node['edge_media_to_caption']['edges'][0]['node']['text']
-                    data['username'] = node['owner']['username']
                     data['n_likes'] = node['edge_liked_by']['count']
                     data['n_comments'] = node['edge_media_to_comment']['count']
-                    data['link'] = profile_url
+                    profile = dict()
+                    profile['username'] = node['owner']['username']
+                    profile['profile_pic_url'] = user_metrics['profile_pic_url']
+                    profile['profile_pic_url_hd'] = user_metrics['profile_pic_url_hd']
+                    profile['profile_link'] = profile_url
+                    data['profile'] = profile
                     results.append(data)
         return results
