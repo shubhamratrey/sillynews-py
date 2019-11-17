@@ -2,7 +2,7 @@ from dateutil import parser
 import random
 import feedparser
 from django.core.paginator import Paginator, InvalidPage
-from constants import ContentType
+from constants import CONTENT_TYPE
 
 
 class RSSHelper(object):
@@ -66,24 +66,25 @@ class RSSHelper(object):
 
     @staticmethod
     def get_rss_links(_filter=None):
-        rss_list = [{'link': 'feed:https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms',
-                     'content_type': ContentType.ENTERTAINMENT},
-                    {'link': 'feed:https://thewire.in/rss', 'content_type': ContentType.POLITICAL},
-                    {'link': 'http://feeds.feedburner.com/ScrollinArticles.rss', 'content_type': 'Entertainment'},
-                    {'link': 'feed:https://www.livemint.com/rss/politics', 'content_type': 'Entertainment'},
-                    {'link': 'feed:https://timesofindia.indiatimes.com/rssfeedstopstories.cms',
-                     'content_type': 'Entertainment'},
-                    {'link': 'feed:https://timesofindia.indiatimes.com/rssfeeds/-2128936835.cms',
-                     'content_type': 'Entertainment'},
-                    {'link': 'http://feeds.feedburner.com/ScrollinArticles.rss', 'content_type': 'Entertainment'},
-                    {'link': 'https://indianexpress.com/feed/', 'content_type': 'Entertainment'},
-                    {'link': 'https://www.thehindu.com/news/national/?service=rss', 'content_type': 'Entertainment'},
-                    {'link': 'https://www.news18.com/rss/india.xml', 'content_type': 'Entertainment'},
-                    {'link': 'http://www.firstpost.com/feed/rss', 'content_type': 'Entertainment'},
-                    {'link': 'feed:https://www.business-standard.com/rss/latest.rss', 'content_type': 'Entertainment'},
-                    {'link': 'https://prod-qt-images.s3.amazonaws.com/production/thequint/feed.xml',
-                     'content_type': 'Entertainment'},
-                    {'link': 'feed:https://thewire.in/rss', 'content_type': 'Entertainment'}]
+        rss_list = [{'link': 'feed:https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms','content_type': CONTENT_TYPE.ENTERTAINMENT},
+                    {'link': 'feed:https://thewire.in/rss', 'content_type': CONTENT_TYPE.POLITICAL},
+                    {'link': 'http://feeds.feedburner.com/ScrollinArticles.rss', 'content_type': CONTENT_TYPE.POLITICAL},
+                    {'link': 'feed:https://www.livemint.com/rss/politics', 'content_type': CONTENT_TYPE.POLITICAL},
+                    {'link': 'https://timesofindia.indiatimes.com/rssfeeds/5880659.cms','content_type': CONTENT_TYPE.TECHNOLOGY},
+                    # {'link': 'feed:https://timesofindia.indiatimes.com/rssfeedstopstories.cms',
+                    #  'content_type': 'Entertainment'},
+                    # {'link': 'feed:https://timesofindia.indiatimes.com/rssfeeds/-2128936835.cms',
+                    #  'content_type': 'Entertainment'},
+                    # {'link': 'http://feeds.feedburner.com/ScrollinArticles.rss', 'content_type': 'Entertainment'},
+                    # {'link': 'https://indianexpress.com/feed/', 'content_type': 'Entertainment'},
+                    # {'link': 'https://www.thehindu.com/news/national/?service=rss', 'content_type': 'Entertainment'},
+                    # {'link': 'https://www.news18.com/rss/india.xml', 'content_type': 'Entertainment'},
+                    # {'link': 'http://www.firstpost.com/feed/rss', 'content_type': 'Entertainment'},
+                    # {'link': 'feed:https://www.business-standard.com/rss/latest.rss', 'content_type': 'Entertainment'},
+                    # {'link': 'https://prod-qt-images.s3.amazonaws.com/production/thequint/feed.xml',
+                    #  'content_type': 'Entertainment'},
+                    # {'link': 'feed:https://thewire.in/rss', 'content_type': 'Entertainment'}
+                    ]
 
         if _filter:
             temp_filter_list = []

@@ -3,7 +3,7 @@ class ContentType(object):
     POLITICAL = 'political'
     BOLLYWOOD = 'bollywood'
     SPORTS = 'sports'
-    TECHNOLOGY = 'TECHNOLOGY'
+    TECHNOLOGY = 'technology'
 
 
-CONTENT_TYPES = ContentType()
+CONTENT_TYPE = ContentType()
