@@ -102,7 +102,6 @@ class InstaHelper(object):
     @staticmethod
     def profile_page_recent_posts(profile_url):
         results = []
-
         try:
             response = ScrapperHelper.get_response_from_url(profile_url)
             json_data = ScrapperHelper.extract_json_data_from_html(response)
