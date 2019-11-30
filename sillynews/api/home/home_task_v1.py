@@ -5,12 +5,12 @@ from users.models import UserProfile
 from constants import INVALID_RESOURCE
 
 
-class TaskHomeV1(APIResponseBase):
+class HomeTaskV1(APIResponseBase):
     __versions_compatible__ = ('1', '1.0')
     __page_size__ = 10
 
     def __init__(self, **kwargs):
-        super(TaskHomeV1, self).__init__(**kwargs)
+        super(HomeTaskV1, self).__init__(**kwargs)
         self.allowed_methods = ('GET',)
 
     @allowed_methods
@@ -47,6 +47,8 @@ class TaskHomeV1(APIResponseBase):
                     }
                 })
                 has_more_schedules, schedules = TaskHelper.get_schedules(profile_id=profile.id, page_no=page_no, page_size=page_size)
+                schedule_ids = [schedule['id'] for schedule in schedules]
+                comp_perc = TaskHelper.get_schedules_comp_perc(schedules_ids=schedule_ids)
                 items.append({
                     "type": "schedules",
                     "schedules": schedules,

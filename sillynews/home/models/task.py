@@ -8,16 +8,21 @@ class Schedule(models.Model):
     profile = models.ForeignKey('users.UserProfile', null=False, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, null=True)
     added_on = models.DateTimeField(auto_now_add=True)
-    time = models.DateTimeField(null=True)
+    start_time = models.DateTimeField(null=True)
+    end_time = models.DateTimeField(null=True)
     icon_url = models.CharField(max_length=512, null=True)
     status = models.CharField(choices=constants.SCHEDULE_STATUSES.VALID_STATUSES,
                               default=constants.SCHEDULE_STATUSES.ACTIVE, max_length=255, db_index=True)
+    slug = models.SlugField(max_length=255, unique=True)
+    days = models.CharField(max_length=255, choices=constants.DAYS_OF_WEEK.VALID_DAYS,
+                            default=constants.DAYS_OF_WEEK.VALID_DAYS)
 
     def to_json(self):
         doc = {
             'id': self.id,
             'title': self.title,
             'time': self.time.isoformat(),
+            'slug': self.slug,
             'icon_url': self.icon_url,
         }
         return doc
@@ -26,7 +31,7 @@ class Schedule(models.Model):
         slug = slugify(self.title) or str(uuid.uuid4())
         unique_slug = slug
         num = 1
-        while Schedule.objects.filter(slug=unique_slug).exists():
+        while Schedule.objects.filter(slug=unique_slug, profile_id=self.profile_id).exists():
             unique_slug = '{}-{}'.format(slug, num)
             num += 1
         return unique_slug

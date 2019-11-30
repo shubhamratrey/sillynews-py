@@ -10,6 +10,11 @@ class InvalidResource(object):
     USER_ID = 'INVALID_USER_ID'
     NAME = 'INVALID_NAME'
     PRICE = 'PRICE'
+    TITLE = 'TITLE'
+    TIME = 'TIME'
+    SCHEDULE = 'SCHEDULE'
+    TASK = 'TASK'
+    DAY = 'DAY'
     RETAILER = 'retailer'
     PRODUCT = 'product'
 
