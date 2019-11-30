@@ -39,7 +39,7 @@ class HomeTaskV1(APIResponseBase):
                     self.set_404('Invalid profile.', INVALID_RESOURCE.USER_ID)
                     return
                 items.append({
-                    "type": 'user_description',
+                    "type": 'user_info',
                     "user_info": {
                         "name": ' '.join([profile.first_name, profile.last_name]).strip(),
                         "quote": "Quote of the day",
