@@ -51,12 +51,10 @@ class Task(models.Model):
     status = models.CharField(choices=constants.TASK_STATUSES.VALID_STATUSES,
                               default=constants.TASK_STATUSES.PENDING, max_length=255, db_index=True)
     rank = models.IntegerField(null=True)
-    slug = models.SlugField(max_length=255, unique=True)
 
     def to_json(self):
         return {
             'id': self.id,
             'title': self.title,
-            'slug': self.slug,
             'status': self.status,
         }
