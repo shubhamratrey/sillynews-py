@@ -28,6 +28,7 @@ class HomeTaskV1(APIResponseBase):
         if _type == 'schedules':
             has_more_schedules, schedules = TaskHelper.get_schedules(profile_id=profile.id, page_no=page_no,
                                                                      page_size=page_size, day=day)
+            has_more = has_more_schedules
             items.append({
                 "type": "schedules",
                 "schedules": schedules,
