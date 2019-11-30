@@ -6,9 +6,12 @@ from constants import TASK_STATUSES
 class TaskHelper(object):
 
     @staticmethod
-    def get_schedules(profile_id, page_no=1, page_size=20):
+    def get_schedules(profile_id, page_no=1, page_size=20, day=None):
         schedule_list = []
-        schedules = Schedule.objects.filter(profile_id=profile_id).order_by('-start_time')
+        schedules = Schedule.objects.filter(profile_id=profile_id)
+        if day:
+            schedules = schedules.filter(days=day)
+        schedules = schedules.order_by('-start_time')
         paginator = Paginator(schedules, page_size)
         has_next = page_no < paginator.num_pages
 

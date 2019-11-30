@@ -23,9 +23,11 @@ class HomeTaskV1(APIResponseBase):
         page_no = self.get_sanitized_int(self.request.GET.get('page', 1))
         page_size = self.get_sanitized_int(self.request.GET.get('page_size', self.__page_size__))
         _type = request.GET.get('type')
+        day = request.GET.get('day')
         has_more = False
         if _type == 'schedules':
-            has_more_schedules, schedules = TaskHelper.get_schedules(profile_id=profile.id, page_no=page_no, page_size=page_size)
+            has_more_schedules, schedules = TaskHelper.get_schedules(profile_id=profile.id, page_no=page_no,
+                                                                     page_size=page_size, day=day)
             items.append({
                 "type": "schedules",
                 "schedules": schedules,
@@ -48,7 +50,8 @@ class HomeTaskV1(APIResponseBase):
                         "time ": timezone.now().isoformat()
                     }
                 })
-                has_more_schedules, schedules = TaskHelper.get_schedules(profile_id=profile.id, page_no=page_no, page_size=page_size)
+                has_more_schedules, schedules = TaskHelper.get_schedules(profile_id=profile.id, page_no=page_no,
+                                                                         page_size=page_size, day=day)
                 schedule_ids = [schedule['id'] for schedule in schedules]
                 comp_perc = TaskHelper.get_schedules_comp_perc(schedules_ids=schedule_ids)
                 items.append({
