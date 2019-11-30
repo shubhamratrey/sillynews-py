@@ -21,6 +21,9 @@ class FirebaseAuthBackend:
             if firebase_user.get('phone_number'):
                 profile.phone = firebase_user.get('phone_number')
                 profile.username = firebase_user.get('phone_number')
+            if firebase_user.get('name') and not profile.first_name:
+                profile.first_name = firebase_user.get('name').split(' ')[0]
+                profile.last_name = ' '.join(firebase_user.get('name').split(' ')[1:])
             profile.signedup_on = timezone.now()
             profile.anonymous = False
             profile.firebase_signin_provider = firebase_user['firebase']['sign_in_provider']
@@ -31,6 +34,9 @@ class FirebaseAuthBackend:
                     profile = UserProfile.objects.get(phone=firebase_user.get('phone_number'), firebase_uid__isnull=True)
                     if firebase_user.get('email'):
                         profile.email = firebase_user.get('email')
+                    if firebase_user.get('name') and not profile.first_name:
+                        profile.first_name = firebase_user.get('name').split(' ')[0]
+                        profile.last_name = ' '.join(firebase_user.get('name').split(' ')[1:])
                 elif firebase_user.get('email'):
                     profile = UserProfile.objects.get(email=firebase_user.get('email'), firebase_uid__isnull=True)
                     if firebase_user.get('phone_number'):
@@ -44,6 +50,9 @@ class FirebaseAuthBackend:
                                       phone=firebase_user.get('phone_number'))
                 if firebase_user.get('email'):
                     profile.email = firebase_user.get('email')
+                if firebase_user.get('name') and not profile.first_name:
+                    profile.first_name = firebase_user.get('name').split(' ')[0]
+                    profile.last_name = ' '.join(firebase_user.get('name').split(' ')[1:])
             profile.firebase_signin_provider = firebase_user['firebase']['sign_in_provider']
             try:
                 profile.save()

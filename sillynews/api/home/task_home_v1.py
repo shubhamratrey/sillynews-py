@@ -56,7 +56,7 @@ class TaskHomeV1(APIResponseBase):
             has_more = has_more_task
             items.append({
                 "type": "tasks",
-                "schedules": tasks,
+                "tasks": tasks,
                 "has_more": has_more_task,
             })
         data['items'] = items
