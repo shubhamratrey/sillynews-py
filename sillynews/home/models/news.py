@@ -4,7 +4,7 @@ from django.utils.text import slugify
 
 
 class NewsRssLink(models.Model):
-    content_type = models.ForeignKey('home.ContentType', on_delete=models.CASCADE)
+    content_type = models.ForeignKey('home.NewsContentType', on_delete=models.CASCADE)
     link = models.CharField(max_length=512, null=False)
     title = models.CharField(max_length=255, null=True)
     added_on = models.DateTimeField(auto_now_add=True)
