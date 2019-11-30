@@ -42,7 +42,7 @@ class UpdateScheduleV1(APIResponseBase):
                 except:
                     self.set_bad_req('Invalid time.', '')
                     return data
-            end_time = request.POST.get('start_time')
+            end_time = request.POST.get('end_time')
             if end_time:
                 try:
                     end_time = parser.parse(end_time)

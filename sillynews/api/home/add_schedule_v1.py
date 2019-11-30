@@ -30,7 +30,7 @@ class AddScheduleV1(APIResponseBase):
         if not start_time:
             self.set_bad_req('Start time can not be empty.', INVALID_RESOURCE.TIME)
             return data
-        end_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
         if not end_time:
             self.set_bad_req('End time can not be empty.', INVALID_RESOURCE.TIME)
             return data

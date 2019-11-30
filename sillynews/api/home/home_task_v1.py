@@ -3,6 +3,7 @@ from api.decorators.validators import allowed_methods
 from helpers.task_helper import TaskHelper
 from users.models import UserProfile
 from constants import INVALID_RESOURCE
+from django.utils import timezone
 
 
 class HomeTaskV1(APIResponseBase):
@@ -44,6 +45,7 @@ class HomeTaskV1(APIResponseBase):
                         "quote": "Quote of the day",
                         "n_pending_task": 4,
                         "n_total_task": 10,
+                        "time ": timezone.now().isoformat()
                     }
                 })
                 has_more_schedules, schedules = TaskHelper.get_schedules(profile_id=profile.id, page_no=page_no, page_size=page_size)

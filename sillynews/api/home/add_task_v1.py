@@ -42,6 +42,6 @@ class AddTaskV1(APIResponseBase):
         task = Task.objects.create(title=title, schedule_id=schedule_id, profile_id=profile.id, rank=rank)
         data['task'] = task.to_json()
         if task.schedule:
-            data['task']['schedule'] = task.to_json()
+            data['task']['schedule'] = task.schedule.to_json()
 
         return data

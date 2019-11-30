@@ -21,7 +21,8 @@ class Schedule(models.Model):
         doc = {
             'id': self.id,
             'title': self.title,
-            'time': self.time.isoformat(),
+            'start_time': self.start_time.isoformat(),
+            'end_time': self.end_time.isoformat(),
             'slug': self.slug,
             'icon_url': self.icon_url,
         }

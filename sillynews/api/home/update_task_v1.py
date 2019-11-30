@@ -43,5 +43,5 @@ class UpdateTaskV1(APIResponseBase):
 
         data['task'] = _task.to_json()
         if _task.schedule:
-            data['task']['schedule'] = _task.to_json()
+            data['task']['schedule'] = _task.schedule.to_json()
         return data
