@@ -1,4 +1,4 @@
-Django==2.0.12
+Django==2.2.24
 psycopg2==2.7.5
 PyJWT==1.6.4
 gunicorn==19.9.0
